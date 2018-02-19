@@ -1,0 +1,1 @@
+{"exit_code":0,"action":"fetch","mode":"simple","error":0,"status":1,"timeout":0,"data":[{"user":"daviwzex","homedir":"/home/daviwzex","type":"main"},{"type":"logaccess","user":"daviwzex_logs","homedir":"/usr/local/apache/domlogs/daviwzex"}],"version":"2.4","statusmsg":"Ran adminbin Cpanel/ftp/LISTSTORE"}
