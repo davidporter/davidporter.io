@@ -1,5 +1,0 @@
-Email-to-case emails:
-davidbrianporter@r-12lcrtepo8h7ku79j0fvervi6a05yjpvgvv81xajzzb22esb5u.1d-8koiuaq.cs68.case.sandbox.salesforce.com
-
-omaianu@2eqzzxqzztnm15c0a5grfbhjjtj0w85ri5s2mah6eajgre5w52.1d-8koiuaq.cs68.case.sandbox.salesforce.com
-
