@@ -1,3 +1,4 @@
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
     var tabulate = function (data,columns) {
         var table = d3.select('body').append('table')
@@ -30,7 +31,7 @@
       }
       
       d3.csv('data/cars.csv',function (data) {
-          var columns = ['variable','aror','asd','maxdd']
+          var columns = ['Car','Manufacturer','MPG','Cylinders','Displacement','Horsepower','Weight','Acceleration','Model Year','Origin']
         tabulate(data,columns)
       })
 </script>
