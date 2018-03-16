@@ -25,11 +25,11 @@
 <script>
 
 var margin = {top: 20, right: 20, bottom: 70, left: 40},
-    width = 600 - margin.left - margin.right,
+    width = 1000 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
 // Parse the date / time
-var	parseDate = d3.time.format("%Y-%m").parse;
+var	parseDate = d3.time.format("%Y").parse;
 
 var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
 
@@ -38,7 +38,7 @@ var y = d3.scale.linear().range([height, 0]);
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
-    .tickFormat(d3.time.format("%Y-%m"));
+    .tickFormat(d3.time.format("%Y"));
 
 var yAxis = d3.svg.axis()
     .scale(y)
@@ -52,15 +52,15 @@ var svg = d3.select("body").append("svg")
     .attr("transform", 
           "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("data/bar-data.csv", function(error, data) {
+d3.csv("data/films.csv", function(error, data) {
 
     data.forEach(function(d) {
-        d.date = parseDate(d.date);
-        d.value = +d.value;
+        d.Year = parseDate(d.Year);
+        d.Length = +d.Length;
     });
 	
-  x.domain(data.map(function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+  x.domain(data.map(function(d) { return d.Year; }));
+  y.domain([0, d3.max(data, function(d) { return d.Length; })]);
 
   svg.append("g")
       .attr("class", "x axis")
@@ -80,16 +80,16 @@ d3.csv("data/bar-data.csv", function(error, data) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Value ($)");
+      .text("Minutes");
 
   svg.selectAll("bar")
       .data(data)
     .enter().append("rect")
       .style("fill", "steelblue")
-      .attr("x", function(d) { return x(d.date); })
+      .attr("x", function(d) { return x(d.Year); })
       .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.value); })
-      .attr("height", function(d) { return height - y(d.value); });
+      .attr("y", function(d) { return y(d.Length); })
+      .attr("height", function(d) { return height - y(d.Length); });
 
 });
 
