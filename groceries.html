@@ -1,36 +1,153 @@
-<script src="d3.js"></script>
+<!DOCTYPE html>
 
-<script>
-// globals
-var familymembers
-
-d3.csv("data/groceries.csv")
-    .row(function(d){
-        return {
-            amount: d.PurchaseAmount,
-            familysize: d.FamilySize
+<head>
+    <script src="d3.js"></script>
+    <style>
+        body {
+            margin: 0;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
         }
-    })
-    .get( function(error,data) {
-    console.log(data[2].amount)
 
-    for (i = 0; i < data.length; i++) {
-        
-    }
-
-    function addamount(f) {
-        var sum = 0;
-        for (i = 0; i < data.length; i++) {
-            if (data[i].familysize == f) {
-                sum += parseInt(data[i].amount, 10);
-                console.log(parseInt(familymembers,10))
-            }
+        div.tooltip {
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            height: 28px;
+            padding: 2px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
         }
-        return sum
-        console.log(sum)
-    }
+    </style>
+</head>
 
-    console.log("\ntotal spent by family 1 :  "+addamount(4)+"\n\nended amount")
+<body>
+    <script>
+        // globals
+        var familymembers
 
-})
-</script>
+
+
+
+        d3.csv("data/groceries.csv")
+            .row(function (d) {
+                return {
+                    amount: d.PurchaseAmount,
+                    familysize: d.FamilySize
+                }
+            })
+            .get(function (error, data) {
+                console.log(data[2].amount)
+
+                for (i = 0; i < data.length; i++) {
+
+                }
+
+                function personcost(f) {
+                    var sum = 0;
+                    var count = 0;
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].familysize == f) {
+                            sum += parseInt(data[i].amount, 10);
+                            count++
+                        }
+                    }
+                    return sum / count
+                }
+                var div = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
+                y = 40
+                x = 40
+                //Make an SVG Container
+                var svgContainer = d3.select("body").append("svg")
+                    .attr("width", 200)
+                    .attr("height", 400)
+                    .style("fill", "#45f442");
+
+                //Draw the Circle
+                var famOne = svgContainer.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y)
+                    .attr("r", personcost(1) / 10)
+                    .on("mouseover", function (d) {
+                        div.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                        div.html("fatso")
+                            .style("left", (d3.select(this).attr("cx")+30))
+                            .style("top", (d3.select(this).attr("cy")-10));
+                    })
+                    .on("mouseout", function (d) {
+                        div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    });
+
+                //Draw the Circle
+                var famOne = svgContainer.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y+=30)
+                    .attr("r", personcost(2) / 10)
+                    .on("mouseover", function (d) {
+                        div.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                        div.html("domino")
+                            .style("left", (d3.select(this).attr("cx")+130))
+                            .style("top", (d3.select(this).attr("cy")-10));
+                    })
+                    .on("mouseout", function (d) {
+                        div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    });
+
+                var famThree = svgContainer.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y += 30)
+                    .attr("r", personcost(3) / 10);
+
+                var famFour = svgContainer.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y += 30)
+                    .attr("r", personcost(4) / 10);
+
+                var famFive = svgContainer.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y += 30)
+                    .attr("r", personcost(5) / 10);
+
+                var famSix = svgContainer.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y += 30)
+                    .attr("r", personcost(6) / 10);
+
+                var famSeven = svgContainer.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y += 30)
+                    .attr("r", personcost(7) / 10);
+
+                var famEight = svgContainer.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y += 30)
+                    .attr("r", personcost(8) / 10);
+
+                var famNine = svgContainer.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y += 30)
+                    .attr("r", personcost(9) / 10);
+
+
+                for (n = 1; n < 10; n++) {
+                    console.log("\ntotal spent by family " + n + ":  " + personcost(n))
+                }
+            })
+    </script>
+</body>
