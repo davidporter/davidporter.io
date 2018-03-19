@@ -2,6 +2,7 @@
 
 <head>
     <script src="d3.js"></script>
+
     <style>
         body {
             margin: 0;
@@ -10,6 +11,19 @@
             right: 0;
             bottom: 0;
             left: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            text-align: left;
+            width: 80px;
+            height: 22px;
+            padding: 8px;
+            margin-top: -20px;
+            margin-left: 60px;
+            font: 10px sans-serif;
+            background: #ddd;
+            pointer-events: none;
         }
 
         div.tooltip {
@@ -24,16 +38,21 @@
             border-radius: 8px;
             pointer-events: none;
         }
+
+        .description {
+            position: absolute;
+            left: 80px;
+            top: 30px;
+            z-index: -1;
+        }
     </style>
+
 </head>
 
 <body>
     <script>
         // globals
         var familymembers
-
-
-
 
         d3.csv("data/groceries.csv")
             .row(function (d) {
@@ -43,11 +62,6 @@
                 }
             })
             .get(function (error, data) {
-                console.log(data[2].amount)
-
-                for (i = 0; i < data.length; i++) {
-
-                }
 
                 function personcost(f) {
                     var sum = 0;
@@ -60,94 +74,202 @@
                     }
                     return sum / count
                 }
-                var div = d3.select("body").append("div")
-                    .attr("class", "tooltip")
-                    .style("opacity", 0);
-                y = 40
-                x = 40
-                //Make an SVG Container
-                var svgContainer = d3.select("body").append("svg")
-                    .attr("width", 200)
-                    .attr("height", 400)
-                    .style("fill", "#45f442");
 
-                //Draw the Circle
-                var famOne = svgContainer.append("circle")
-                    .attr("cx", x)
-                    .attr("cy", y)
-                    .attr("r", personcost(1) / 10)
-                    .on("mouseover", function (d) {
-                        div.transition()
-                            .duration(200)
-                            .style("opacity", .9);
-                        div.html("fatso")
-                            .style("left", (d3.select(this).attr("cx")+30))
-                            .style("top", (d3.select(this).attr("cy")-10));
-                    })
-                    .on("mouseout", function (d) {
-                        div.transition()
-                            .duration(500)
-                            .style("opacity", 0);
-                    });
+                //////////////// needed
+                x = 40  // x - starting point of circle position
+                y = 40  // y - starting point of circle position
+                var width = 960,
+                    height = 1500;
 
-                //Draw the Circle
-                var famOne = svgContainer.append("circle")
-                    .attr("cx", x)
-                    .attr("cy", y+=30)
-                    .attr("r", personcost(2) / 10)
-                    .on("mouseover", function (d) {
-                        div.transition()
-                            .duration(200)
-                            .style("opacity", .9);
-                        div.html("domino")
-                            .style("left", (d3.select(this).attr("cx")+130))
-                            .style("top", (d3.select(this).attr("cy")-10));
-                    })
-                    .on("mouseout", function (d) {
-                        div.transition()
-                            .duration(500)
-                            .style("opacity", 0);
-                    });
+                // svg place to draw d3
+                var svg = d3.select("body").append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
 
-                var famThree = svgContainer.append("circle")
+                ////////////////////////////////////////////////////////////////////////
+
+                svg.append("g")
+                    .append("circle")
                     .attr("cx", x)
                     .attr("cy", y += 30)
-                    .attr("r", personcost(3) / 10);
-
-                var famFour = svgContainer.append("circle")
+                    .style("fill", getRandomColor())
+                    .attr("r", function (d) { return personcost(1) / 10 });
+                svg.append("g")
+                    .append("circle")
                     .attr("cx", x)
                     .attr("cy", y += 30)
-                    .attr("r", personcost(4) / 10);
-
-                var famFive = svgContainer.append("circle")
+                    .style("fill", getRandomColor())
+                    .attr("r", function (d) { return personcost(2) / 10 });
+                svg.append("g")
+                    .append("circle")
                     .attr("cx", x)
                     .attr("cy", y += 30)
-                    .attr("r", personcost(5) / 10);
-
-                var famSix = svgContainer.append("circle")
+                    .style("fill", getRandomColor())
+                    .attr("r", function (d) { return personcost(3) / 10 });
+                svg.append("g")
+                    .append("circle")
                     .attr("cx", x)
                     .attr("cy", y += 30)
-                    .attr("r", personcost(6) / 10);
-
-                var famSeven = svgContainer.append("circle")
+                    .style("fill", getRandomColor())
+                    .attr("r", function (d) { return personcost(4) / 10 });
+                svg.append("g")
+                    .append("circle")
                     .attr("cx", x)
                     .attr("cy", y += 30)
-                    .attr("r", personcost(7) / 10);
-
-                var famEight = svgContainer.append("circle")
+                    .style("fill", getRandomColor())
+                    .attr("r", function (d) { return personcost(5) / 10 });
+                svg.append("g")
+                    .append("circle")
                     .attr("cx", x)
                     .attr("cy", y += 30)
-                    .attr("r", personcost(8) / 10);
-
-                var famNine = svgContainer.append("circle")
+                    .style("fill", getRandomColor())
+                    .attr("r", function (d) { return personcost(6) / 10 });
+                svg.append("g")
+                    .append("circle")
                     .attr("cx", x)
                     .attr("cy", y += 30)
-                    .attr("r", personcost(9) / 10);
+                    .style("fill", getRandomColor())
+                    .attr("r", function (d) { return personcost(7) / 10 });
+                svg.append("g")
+                    .append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y += 30)
+                    .style("fill", getRandomColor())
+                    .attr("r", function (d) { return personcost(8) / 10 });
+                svg.append("g")
+                    .append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y += 30)
+                    .style("fill", getRandomColor())
+                    .attr("r", function (d) { return personcost(9) / 10 });
 
-
-                for (n = 1; n < 10; n++) {
-                    console.log("\ntotal spent by family " + n + ":  " + personcost(n))
+                function getRandomColor() {
+                    var letters = '0123456789ABCDEF';
+                    var color = '#';
+                    for (var i = 0; i < 6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
                 }
+
+                // var div = d3.select("body").append("div")
+                //     .attr("class", "tooltip")
+                //     .style("display", "none");
+
+                // function mouseover() {
+                //     div.style("display", "inline")
+                // }
+                // function mousemove() {
+                //     div
+                //         .text(function (d) { return personcost(1) })
+                //         .style("left", (d3.event.pageX - 34) + "px")
+                //         .style("top", (d3.event.pageY - 12) + "px");
+                // }
+                // function mouseout() {
+                //     div.style("display", "none");
+                // }
+
+
+
+
+                // var width = 960,
+                //     height = 1500;
+
+                // var svg = d3.select("body").append("svg")
+                //     .attr("width", width)
+                //     .attr("height", height);
+
+                // svg.append("g")
+                //     .append("circle")
+                //     .attr("cx", x)
+                //     .attr("cy", y += 30)
+                //     .attr("r", personcost(4) / 10)
+                //     .on("mouseover", mouseover)
+                //     .on("mousemove", mousemove)
+                //     .on("mouseout", mouseout);
+
+                // var div = d3.select("body").append("div")
+                //     .attr("class", "tooltip")
+                //     .style("display", "none");
+
+                // function mouseover() {
+                //     div.style("display", "inline");
+                // }
+
+                // function mousemove() {
+                //     div
+                //         .text(
+                //             "Family of 4 Spent $" + Math.trunc(personcost(4)) + " per pseron")
+                //         .style("left", (d3.event.pageX - 34) + "px")
+                //         .style("top", (d3.event.pageY - 12) + "px");
+                // }
+
+                // function mouseout() {
+                //     div.style("display", "none");
+                // }
+                //////////////////////////////////////////////////////////
+
+var text = ""
+                for (n = 1; n < 10; n++) {
+                    text += "\nA family of " +n+ " spends: " + Math.trunc(personcost(n), 2) + " per family member <br /><br />";
+                }
+
+               
+                    document.getElementById("demo").innerHTML = text;
+               
             })
+//         var margin = { top: 30, right: 20, bottom: 30, left: 50 },
+//             width = 600 - margin.left - margin.right,
+//             height = 270 - margin.top - margin.bottom;
+
+//         var div = d3.select("body").append("div")
+//             .attr("class", "tooltip")
+//             .style("opacity", 0);
+
+//         var svg = d3.select("body")
+//             .append("svg")
+//             .attr("width", width + margin.left + margin.right)
+//             .attr("height", height + margin.top + margin.bottom)
+//             .append("g")
+//             .attr("transform",
+//                 "translate(" + margin.left + "," + margin.top + ")");
+
+//         var mata = [10, 10, 10, 4, 5]
+
+// var csvdata = d3.csv("data/groceries.csv")
+//             .row(function (d) {
+//                 return {
+//                     amount: d.PurchaseAmount,
+//                     familysize: d.FamilySize
+//                 }
+//                             console.log(amount)
+//             });
+
+
+
+
+//                 var newX = 300;
+//                 var newY = 50;
+//                 svg.selectAll("circle")
+//                     .data(mata)
+//                     .enter().append("circle")
+//                     .attr("cx", function (d, i) { newX += (d * 6) + (i * 40); return 300 + (i * 40); })
+//                     .attr("cy", 100)
+//                     .attr("r", function (d) { return d * 3; })
+//                     .on("mouseover", function (d) {
+//                         div.transition()
+//                             .duration(200)
+//                             .style("opacity", .9);
+//                         div.html(function (d) { return d * 3; })
+//                             .style("left", (d3.event.pageX) + "px")
+//                             .style("top", (d3.event.pageY - 28) + "px");
+//                     })
+//                     .on("mouseout", function (d) {
+//                         div.transition()
+//                             .duration(500)
+//                             .style("opacity", 0);
+//                     });
+
     </script>
+    <h3 id="demo" class="description">this is where the description goesssss!</h3>
 </body>
